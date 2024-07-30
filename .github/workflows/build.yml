@@ -27,7 +27,7 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: Binaries
+          name: Binaries_${{ matrix.component }}
           path: |
             README.md
             LICENSE
@@ -41,6 +41,8 @@ jobs:
     steps:
       - name: Download artifacts
         uses: actions/download-artifact@v3
+      - name: List files
+        run: tree
       - name: Generate payloads
         run: |
           mkdir output
