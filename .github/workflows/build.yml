@@ -27,7 +27,7 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: Binaries_${{ matrix.component }}
+          name: Binaries-${{ matrix.component }}
           path: |
             README.md
             LICENSE
@@ -39,21 +39,29 @@ jobs:
     runs-on: windows-latest
     needs: build
     steps:
-      - name: Download artifacts
+      - name: Download All Artifacts
         uses: actions/download-artifact@v4
+        with:
+          path: .
+          pattern: Binaries-*
+          merge-multiple: true
       - name: List files
         run: tree
       - name: Generate payloads
         run: |
           mkdir output
-          .\Binaries_shellcode_gen\crates\shellcode_gen\target\release\shellcode_gen.exe output\
+          .\crates\shellcode_gen\target\release\shellcode_gen.exe output\
       - name: List files
         run: dir output\
       - name: Copy artifact binaries to output directory
         run: |
-          xcopy *\crates\daemon\target\release\daemon.exe output\
-          xcopy *\crates\server\target\release\server.exe output\
-          xcopy *\crates\test_program_rust\target\x86_64-pc-windows-msvc\release\test_program_rust.exe output\
+          xcopy README.md output\
+          xcopy LICENSE output\
+          xcopy crates\daemon\target\release\daemon.exe output\
+          xcopy crates\server\target\release\server.exe output\
+          xcopy crates\test_program_rust\target\x86_64-pc-windows-msvc\release\test_program_rust.exe output\
+      - name: List files
+        run: dir output\
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -66,7 +74,7 @@ jobs:
     needs: [generate]
     steps:
       - name: Download artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
 
       - name: Bundle binaries
         run: tree .
