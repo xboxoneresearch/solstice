@@ -79,6 +79,12 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: Release
+          path: .
+
+      - run: |
+          tree
+          dir
+          ls -R
 
       - name: Bundle binaries
         run: 7z a -tzip Solstice.zip .\output\**
