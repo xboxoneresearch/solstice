@@ -11,7 +11,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        component: [shellcode_utils, loader, shellcode_stage1, shellcode_stage1_network, shellcode_stage2, shellcode_gen, daemon, server, test_program_rust]
+        component: [shellcode_utils, loader, shellcode_stage1, shellcode_stage1_network, shellcode_stage2, shellcode_gen, daemon, server]
 
     steps:
       - name: Checkout
@@ -61,12 +61,12 @@ jobs:
           xcopy LICENSE output\
           xcopy crates\daemon\target\release\daemon.exe output\
           xcopy crates\server\target\release\server.exe output\
-          xcopy crates\test_program_rust\target\x86_64-pc-windows-msvc\release\test_program_rust.exe output\
       - name: List files
         run: dir output\
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
+          name: Release
           path: |
             output\**
 
@@ -77,9 +77,11 @@ jobs:
     steps:
       - name: Download artifacts
         uses: actions/download-artifact@v4
+        with:
+          name: Release
 
       - name: Bundle binaries
-        run: tree .
+        run: 7z a -tzip Solstice.zip .\output\**
 
       - name: Release
         uses: softprops/action-gh-release@v2
