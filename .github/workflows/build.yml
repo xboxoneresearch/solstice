@@ -45,24 +45,18 @@ jobs:
           path: .
           pattern: Binaries-*
           merge-multiple: true
-      - name: List files
-        run: |
-          mkdir output
-          tree
+      - name: Create output dir
+        run: mkdir output
       - name: Generate payloads
         working-directory: crates\shellcode_gen
         run: |
           .\target\release\shellcode_gen.exe ${{ github.workspace }}\output\
-      - name: List files
-        run: dir output\
       - name: Copy artifact binaries to output directory
         run: |
           xcopy README.md output\
           xcopy LICENSE output\
           xcopy crates\daemon\target\release\daemon.exe output\
           xcopy crates\server\target\release\server.exe output\
-      - name: List files
-        run: dir output\
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -80,11 +74,6 @@ jobs:
         with:
           name: Release
           path: release\
-
-      - run: |
-          tree
-          dir
-          ls -R
 
       - name: Bundle binaries
         run: 7z a -tzip Solstice.zip .\release\**
