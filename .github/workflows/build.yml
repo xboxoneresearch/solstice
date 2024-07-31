@@ -79,7 +79,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: Release
-          path: .
+          path: release\
 
       - run: |
           tree
@@ -87,7 +87,7 @@ jobs:
           ls -R
 
       - name: Bundle binaries
-        run: 7z a -tzip Solstice.zip .\output\**
+        run: 7z a -tzip Solstice.zip .\release\**
 
       - name: Release
         uses: softprops/action-gh-release@v2
