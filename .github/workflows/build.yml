@@ -46,11 +46,13 @@ jobs:
           pattern: Binaries-*
           merge-multiple: true
       - name: List files
-        run: tree
-      - name: Generate payloads
         run: |
           mkdir output
-          .\crates\shellcode_gen\target\release\shellcode_gen.exe output\
+          tree
+      - name: Generate payloads
+        working-directory: crates\shellcode_gen
+        run: |
+          .\target\release\shellcode_gen.exe ${{ github.workspace }}\output\
       - name: List files
         run: dir output\
       - name: Copy artifact binaries to output directory
