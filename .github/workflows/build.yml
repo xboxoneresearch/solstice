@@ -27,11 +27,11 @@ jobs:
 
       - name: Test ${{ matrix.component }}
         if: ${{ matrix.test }}
-        working-directory: crates/${{ matrix.component }}
+        working-directory: crates\${{ matrix.component }}
         run: cargo test --release --features=${{ matrix.features }}
 
       - name: Build ${{ matrix.component }}
-        working-directory: crates/${{ matrix.component }}
+        working-directory: crates\${{ matrix.component }}
         run: cargo build --release --features=${{ matrix.features }}
 
       - name: Upload artifacts
